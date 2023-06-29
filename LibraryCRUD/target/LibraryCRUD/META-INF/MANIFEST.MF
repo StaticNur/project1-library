@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: ZenBook
+Build-Jdk: BellSoft Liberica version 19.0.1
+

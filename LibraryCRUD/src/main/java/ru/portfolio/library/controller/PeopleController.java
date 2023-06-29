@@ -15,7 +15,7 @@ import javax.validation.ConstraintValidatorContext;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/peo")
+@RequestMapping("/people")
 public class PeopleController {
     private PersonDAO personDAO;
     private CustomSizeValidator customSizeValidator;
