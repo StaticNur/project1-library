@@ -7,7 +7,7 @@ import ru.portfolio.library.dao.PersonDAO;
 import ru.portfolio.library.model.Person;
 @Component
 public class PersonValidator implements Validator {
-    private PersonDAO personDAO;
+    private final PersonDAO personDAO;
 
     public PersonValidator(PersonDAO personDAO) {this.personDAO = personDAO;}
 
@@ -20,6 +20,6 @@ public class PersonValidator implements Validator {
     public void validate(Object o, Errors errors) {
         Person person = (Person) o;
         if (personDAO.showPerson(person.getFullName())!=null)
-            errors.rejectValue("fullName","This fullName is already taken");
+            errors.rejectValue("fullName","Это имя уже занято");
     }
 }

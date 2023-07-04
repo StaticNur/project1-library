@@ -1,45 +1,22 @@
 package ru.portfolio.library.model;
 
-import org.springframework.validation.annotation.Validated;
-import ru.portfolio.library.annotation.CustomSize;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class Person {
     private int id;
-    private int fk_id;
-    @NotNull(message = "not empty")
-    @Pattern(regexp = "[A-Z]\\w+ [A-Z]\\w+ [A-Z]\\w+", message = "Your full name should be in this format: Ivanov Ivan Ivanovich")
+    @Size(min = 1, max = 200, message = "не должен быть пустым")
+    @Pattern(regexp = "([А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+)|([A-Z]\\\\w+ [A-Z]\\\\w+ [A-Z]\\\\w+)", message = "Ваше полное имя должно быть в таком формате: Иванов Иван Иванович")
     private String fullName;
-    @NotNull(message = "not empty")
-    @CustomSize
+    @Min(value = 1900, message = "Значение должно быть больше или равно 1900")
+    @Max(value = 2024, message = "Значение должно быть меньше или равно 2024")
     private Integer yearOfBirth;
     public Person() {
     }
-    public Person(int id,int fk_id,String fullName, Integer yearBirth) {
-        this.id = id;
-        this.fk_id = fk_id;
-        this.fullName = fullName;
-        this.yearOfBirth = yearBirth;
-    }
-    public Person(int id,String fullName, Integer yearBirth) {
+    public Person(int id,String fullName, Integer yearOfBirth) {
         this.id = id;
         this.fullName = fullName;
-        this.yearOfBirth = yearBirth;
+        this.yearOfBirth = yearOfBirth;
     }
-
-    public int getFk_id() {
-        return fk_id;
-    }
-
-    public void setFk_id(int fk_id) {
-        this.fk_id = fk_id;
-    }
-
     public int getId() {
         return id;
     }
