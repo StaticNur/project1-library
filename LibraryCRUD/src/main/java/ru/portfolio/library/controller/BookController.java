@@ -50,6 +50,7 @@ public class BookController {
                              @RequestParam(value = "selectedPersonId" , required = false) Integer selectedPersonId){
         if(selectedPersonId == null){
             bookDAO.update(id);//книга занята, значить освобождаем
+            return "redirect: /books/"+id;
         }else{
             bookDAO.update(id, selectedPersonId);//книга свободно, отдаем кому нибудь
         }

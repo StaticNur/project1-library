@@ -5,7 +5,7 @@ import javax.validation.constraints.*;
 public class Person {
     private int id;
     @Size(min = 1, max = 200, message = "не должен быть пустым")
-    @Pattern(regexp = "([А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+)|([A-Z]\\\\w+ [A-Z]\\\\w+ [A-Z]\\\\w+)", message = "Ваше полное имя должно быть в таком формате: Иванов Иван Иванович")
+    //@Pattern(regexp = "([А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+)|([A-Z]\\\\w+ [A-Z]\\\\w+ [A-Z]\\\\w+)", message = "Ваше полное имя должно быть в таком формате: Иванов Иван Иванович")
     private String fullName;
     @Min(value = 1900, message = "Значение должно быть больше или равно 1900")
     @Max(value = 2024, message = "Значение должно быть меньше или равно 2024")

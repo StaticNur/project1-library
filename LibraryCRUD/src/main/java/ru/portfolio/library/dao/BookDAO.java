@@ -27,8 +27,8 @@ public class BookDAO {
                 book.getYearOfPublishing(),null);
     }
     public Person personTakeBook(int id){
-        return jdbcTemplate.query("SELECT * FROM Person WHERE id=?",
-                new Object[]{showBook(id).getFk_id()},new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
+        return jdbcTemplate.query("SELECT Person.* FROM Book JOIN Person ON Book.fk_id=Person.id WHERE Book.id=?",
+                new Object[]{id},new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
     }
     public void update(int id, Integer selectedPersonId){
         jdbcTemplate.update("UPDATE Book set fk_id=? WHERE id=?",selectedPersonId,id);

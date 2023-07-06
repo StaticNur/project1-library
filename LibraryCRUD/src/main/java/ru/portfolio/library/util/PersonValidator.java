@@ -20,6 +20,6 @@ public class PersonValidator implements Validator {
     public void validate(Object o, Errors errors) {
         Person person = (Person) o;
         if (personDAO.showPerson(person.getFullName())!=null)
-            errors.rejectValue("fullName","Это имя уже занято");
+            errors.rejectValue("fullName","","Это имя уже занято");
     }
 }
