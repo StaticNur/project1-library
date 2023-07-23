@@ -23,7 +23,7 @@ public class BookDAO {
                 stream().findAny().orElse(null);
     }
     public void saveBook(Book book){
-        jdbcTemplate.update("INSERT INTO Book(name, author, yearofpublishing,fk_id) VALUES(?,?,?,?)",book.getName(),book.getAuthor(),
+        jdbcTemplate.update("INSERT INTO Book(name, author, year_of_publishing,fk_id) VALUES(?,?,?,?)",book.getName(),book.getAuthor(),
                 book.getYearOfPublishing(),null);
     }
     public Person personTakeBook(int id){
@@ -37,7 +37,7 @@ public class BookDAO {
         jdbcTemplate.update("UPDATE Book set fk_id=? WHERE id=?",null,id);
     }
     public void editBook(int id, Book book){
-        jdbcTemplate.update("UPDATE Book set name=?,author=?,yearofpublishing=? WHERE id=?",
+        jdbcTemplate.update("UPDATE Book set name=?,author=?,year_of_publishing=? WHERE id=?",
                 book.getName(),book.getAuthor(),book.getYearOfPublishing(),id);
     }
     public void delete(int id){

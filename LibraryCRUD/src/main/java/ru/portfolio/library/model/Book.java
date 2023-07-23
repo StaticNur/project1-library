@@ -7,7 +7,7 @@ public class Book {
     private Integer fk_id;
     @Size(min = 1, max = 200, message = "не должен быть пустым")
     private String name;
-    @Pattern(regexp = "([А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+)|([A-Z]\\\\w+ [A-Z]\\\\w+)", message = "Ваше полное имя должно быть в указанном формате: Иван Иванов")
+    @Pattern(regexp = "([А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+)|([A-Z]\\w+ [A-Z]\\w+)", message = "Ваше полное имя должно быть в указанном формате: Иван Иванов")
     private String author;
     @Min(value = 1800, message = "Значение должно быть больше или равно 1800")
     @Max(value = 2024, message = "Значение должно быть меньше или равно 2024")
