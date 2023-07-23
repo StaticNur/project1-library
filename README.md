@@ -1,5 +1,6 @@
 On the "main" branch, use jdbcTemplate.
-In the "develop" branch, use Hibernate and Spring Data JPA.
+
+On the "develop" branch, use Hibernate and Spring Data JPA.
 
 
 # project1-library
