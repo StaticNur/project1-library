@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.portfolio.library.dao.PersonDAO;
-import ru.portfolio.library.model.Person;
+import ru.portfolio.library.models.Person;
+import ru.portfolio.library.services.PersonService;
 import ru.portfolio.library.util.PersonValidator;
 
 import javax.validation.Valid;
@@ -14,19 +14,21 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/people")
 public class PeopleController {
-    private PersonDAO personDAO;
+    //private PersonDAO personDAO;
     private PersonValidator personValidator;
+    private PersonService personService;
     @Autowired
-    public PeopleController(PersonDAO personDAO, PersonValidator personValidator) {
-        this.personDAO = personDAO;
+    public PeopleController(PersonValidator personValidator,PersonService personService) {
+      //this.personDAO = personDAO;
         this.personValidator = personValidator;
+        this.personService = personService;
     }
     @GetMapping
     public String showAll(Model model){
-        model.addAttribute("people", personDAO.showAll());
+        model.addAttribute("people", personService.findAll());
         return "people/showAll";
     }
-    @GetMapping("{id}")
+    /*@GetMapping("{id}")
     public String showPerson(@PathVariable("id") int id, Model model){
         model.addAttribute("person",personDAO.showPerson(id));
         model.addAttribute("books",personDAO.personHaveBooks(id));
@@ -61,6 +63,6 @@ public class PeopleController {
     public String delete(@PathVariable("id") int id){
         personDAO.delete(id);
         return "redirect: /people";
-    }
+    }*/
 
 }

@@ -5,19 +5,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.portfolio.library.dao.BookDAO;
-import ru.portfolio.library.dao.PersonDAO;
-import ru.portfolio.library.model.Book;
-import ru.portfolio.library.model.Person;
+import ru.portfolio.library.models.Book;
 
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/books")
 public class BookController {
-    private BookDAO bookDAO;
-    private PersonDAO personDAO;
-    @Autowired
+    //private BookDAO bookDAO;
+    //private PersonDAO personDAO;
+    /*@Autowired
     public BookController(BookDAO bookDAO,PersonDAO personDAO) {
         this.bookDAO = bookDAO;
         this.personDAO = personDAO;
@@ -73,5 +70,5 @@ public class BookController {
     public String delete(@PathVariable("id") int id){
         bookDAO.delete(id);
         return "redirect: /books";
-    }
+    }*/
 }

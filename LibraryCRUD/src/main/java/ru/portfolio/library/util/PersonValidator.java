@@ -3,23 +3,24 @@ package ru.portfolio.library.util;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.portfolio.library.dao.PersonDAO;
-import ru.portfolio.library.model.Person;
+import ru.portfolio.library.models.Person;
+import ru.portfolio.library.services.PersonService;
+
 @Component
 public class PersonValidator implements Validator {
-    private final PersonDAO personDAO;
+    private final PersonService personService;
 
-    public PersonValidator(PersonDAO personDAO) {this.personDAO = personDAO;}
+    public PersonValidator(PersonService personService) {this.personService = personService;}
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return personDAO.equals(aClass);
+        return personService.equals(aClass);
     }
 
     @Override
     public void validate(Object o, Errors errors) {
         Person person = (Person) o;
-        if (personDAO.showPerson(person.getFullName())!=null)
+        //if (personService.showPerson(person.getFullName())!=null)
             errors.rejectValue("fullName","","Это имя уже занято");
     }
 }
