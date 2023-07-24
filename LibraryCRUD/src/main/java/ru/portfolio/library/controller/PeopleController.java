@@ -15,12 +15,12 @@ import javax.validation.Valid;
 @RequestMapping("/people")
 public class PeopleController {
     //private PersonDAO personDAO;
-    private PersonValidator personValidator;
+    //private PersonValidator personValidator;
     private PersonService personService;
     @Autowired
-    public PeopleController(PersonValidator personValidator,PersonService personService) {
+    public PeopleController(PersonService personService) {
       //this.personDAO = personDAO;
-        this.personValidator = personValidator;
+        //this.personValidator = personValidator;
         this.personService = personService;
     }
     @GetMapping
