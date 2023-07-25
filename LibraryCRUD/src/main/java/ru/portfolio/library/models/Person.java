@@ -2,6 +2,9 @@ package ru.portfolio.library.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.List;
+import java.util.Objects;
+
 @Entity
 @Table(name = "Person")
 public class Person {
@@ -17,13 +20,23 @@ public class Person {
     @Max(value = 2024, message = "Значение должно быть меньше или равно 2024")
     @Column(name = "year_of_birth")
     private Integer yearOfBirth;
+    @OneToMany(mappedBy = "owner",cascade = CascadeType.PERSIST)
+    private List<Book> books;
     public Person() {
     }
-    public Person(int id,String fullName, Integer yearOfBirth) {
-        this.id = id;
+    public Person(String fullName, Integer yearOfBirth) {
         this.fullName = fullName;
         this.yearOfBirth = yearOfBirth;
     }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
     public int getId() {
         return id;
     }
@@ -46,5 +59,18 @@ public class Person {
 
     public void setYearOfBirth(Integer yearOfBirth) {
         this.yearOfBirth = yearOfBirth;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return id == person.id && Objects.equals(fullName, person.fullName) && Objects.equals(yearOfBirth, person.yearOfBirth);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fullName, yearOfBirth);
     }
 }

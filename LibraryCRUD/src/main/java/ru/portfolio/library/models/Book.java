@@ -2,6 +2,8 @@ package ru.portfolio.library.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Objects;
+
 @Entity
 @Table(name = "Book")
 public class Book {
@@ -9,11 +11,11 @@ public class Book {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "fk_id")
-    private Integer fk_id;
     @Size(min = 1, max = 200, message = "не должен быть пустым")
     @Column(name = "name")
     private String name;
+    @Column(name = "fk_id")
+    private Integer fkId;
     @Pattern(regexp = "([А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+)|([A-Z]\\w+ [A-Z]\\w+)", message = "Ваше полное имя должно быть в указанном формате: Иван Иванов")
     @Column(name = "author")
     private String author;
@@ -21,26 +23,22 @@ public class Book {
     @Max(value = 2024, message = "Значение должно быть меньше или равно 2024")
     @Column(name = "year_of_publishing")
     private Integer yearOfPublishing;
+    @ManyToOne
+    @JoinColumn(name = "fk_id",referencedColumnName = "id", insertable = false, updatable = false)
+    private Person owner;
     public Book() {}
-    public Book(int id, Integer fk_id, String name, String author, Integer yearPublishing) {
-        this.id = id;
-        this.fk_id = fk_id;
+    public Book(String name, String author, Integer yearPublishing) {
         this.name = name;
         this.author = author;
         this.yearOfPublishing = yearPublishing;
-    }
-    public Book(int id, String name, String author, Integer yearPublishing) {
-        this.id = id;
-        this.name = name;
-        this.author = author;
-        this.yearOfPublishing = yearPublishing;
-    }
-    public Integer getFk_id() {
-        return fk_id;
     }
 
-    public void setFk_id(Integer fk_id) {
-        this.fk_id = fk_id;
+    public Integer getFkId() {
+        return fkId;
+    }
+
+    public void setFkId(Integer fkId) {
+        this.fkId = fkId;
     }
 
     public int getId() {
@@ -73,5 +71,26 @@ public class Book {
 
     public void setYearOfPublishing(Integer yearOfPublishing) {
         this.yearOfPublishing = yearOfPublishing;
+    }
+
+    public Person getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Person owner) {
+        this.owner = owner;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return id == book.id && Objects.equals(name, book.name) && Objects.equals(author, book.author) && Objects.equals(yearOfPublishing, book.yearOfPublishing);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, author, yearOfPublishing);
     }
 }

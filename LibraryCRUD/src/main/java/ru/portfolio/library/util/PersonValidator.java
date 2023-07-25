@@ -20,7 +20,7 @@ public class PersonValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         Person person = (Person) o;
-        //if (personService.showPerson(person.getFullName())!=null)
+        if (!(personService.findByFullName(person.getFullName()).isEmpty()))
             errors.rejectValue("fullName","","Это имя уже занято");
     }
 }
