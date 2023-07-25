@@ -1,7 +1,10 @@
 package ru.portfolio.library.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,11 +31,9 @@ public class Person {
         this.fullName = fullName;
         this.yearOfBirth = yearOfBirth;
     }
-
     public List<Book> getBooks() {
         return books;
     }
-
     public void setBooks(List<Book> books) {
         this.books = books;
     }

@@ -8,6 +8,11 @@ import ru.portfolio.library.models.Person;
 import ru.portfolio.library.repositories.BookRepository;
 import ru.portfolio.library.repositories.PersonRepository;
 
+import java.security.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +52,22 @@ public class PersonService {
     public List<Person> findByFullName(String name){
         return personRepository.findByFullName(name);
     }
+
     public List<Book> personHaveBooks(int fkId){
-        return bookRepository.findByFkId(fkId);
+        List<Book> books = bookRepository.findByFkId(fkId);
+        for (Book book:books) {
+            Date dateOfTakeBook = book.getDateOfTakeBook();
+            if (dateOfTakeBook != null){
+                // Преобразование dateOfTakeBook в LocalDateTime
+                LocalDateTime createdAtDateTime = dateOfTakeBook.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                // Текущее время
+                LocalDateTime now = LocalDateTime.now();
+                // Вычисление разницы между временами
+                Duration duration = Duration.between(createdAtDateTime, now);
+                // Проверка, превышает ли разница 10 дней
+                book.setOverdueBook(duration.toDays() > 10);
+            }
+        }
+        return books;
     }
 }

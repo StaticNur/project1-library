@@ -15,7 +15,7 @@
         <b>Книги:</b>
         <ul>
             <li th:each="book : ${books}">
-                <span th:text="${book.getName()+', '+ book.getAuthor()+', '+book.getYearOfPublishing()}"></span>
+                <span th:style="${book.getOverdueBook()} ? 'color: red;' : ''" th:text="${book.getName()+', '+ book.getAuthor()+', '+book.getYearOfPublishing()}"></span>
             </li>
         </ul>
     </div>

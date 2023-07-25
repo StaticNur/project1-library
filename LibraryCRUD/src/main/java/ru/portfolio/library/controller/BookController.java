@@ -29,8 +29,11 @@ public class BookController {
         this.personService = personService;
     }
     @GetMapping
-    public String showAll(Model model){
-        model.addAttribute("books",bookService.findAll());
+    public String showAll(@RequestParam(value = "page",defaultValue = "0") int page,
+                          @RequestParam(value = "books_per_page", defaultValue = "0") int booksPerPage,
+                          @RequestParam(value = "sort_by_year", defaultValue = "false") boolean sortByYear,
+                          Model model){
+        model.addAttribute("books",bookService.findAll(page,booksPerPage,sortByYear));
         return "books/showAll";
     }
     @GetMapping("/new")
@@ -83,5 +86,10 @@ public class BookController {
     public String delete(@PathVariable("id") int id){
         bookService.delete(id);
         return "redirect: /books";
+    }
+    @GetMapping("/search")
+    public String searchBook(@RequestParam(value = "name", defaultValue = "") String name, Model model){
+        model.addAttribute("books",bookService.findByNameStartingWith(name));
+        return "books/searchBook";
     }
 }

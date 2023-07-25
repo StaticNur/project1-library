@@ -2,6 +2,7 @@ package ru.portfolio.library.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -26,11 +27,29 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "fk_id",referencedColumnName = "id", insertable = false, updatable = false)
     private Person owner;
+    @Column(name = "date_of_take_book")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateOfTakeBook;
+    @Transient
+    private Boolean overdueBook;
     public Book() {}
     public Book(String name, String author, Integer yearPublishing) {
         this.name = name;
         this.author = author;
         this.yearOfPublishing = yearPublishing;
+    }
+    public Boolean getOverdueBook() {
+        return overdueBook;
+    }
+    public void setOverdueBook(Boolean overdueBook) {
+        this.overdueBook = overdueBook;
+    }
+    public Date getDateOfTakeBook() {
+        return dateOfTakeBook;
+    }
+
+    public void setDateOfTakeBook(Date dateOfTakeBook) {
+        this.dateOfTakeBook = dateOfTakeBook;
     }
 
     public Integer getFkId() {
