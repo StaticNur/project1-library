@@ -7,7 +7,7 @@
 <body>
   <p th:text="${book.getName()+', '+ book.getAuthor()+', '+ book.getYearOfPublishing()}">Название, Автор, Год публикации</p>
 
-  <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getId()})}" th:object="${people}">
+  <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getId()})}" th:object="${person}">
     <div th:if="${owner == null}">
       <p>Эта книга свободна. Кому назначить её?</p>
       <label for="AllPeople">Выберите читателья</label>

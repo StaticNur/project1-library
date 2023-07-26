@@ -15,8 +15,6 @@ public class Book {
     @Size(min = 1, max = 200, message = "не должен быть пустым")
     @Column(name = "name")
     private String name;
-    @Column(name = "fk_id")
-    private Integer fkId;
     @Pattern(regexp = "([А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+)|([A-Z]\\w+ [A-Z]\\w+)", message = "Ваше полное имя должно быть в указанном формате: Иван Иванов")
     @Column(name = "author")
     private String author;
@@ -25,7 +23,7 @@ public class Book {
     @Column(name = "year_of_publishing")
     private Integer yearOfPublishing;
     @ManyToOne
-    @JoinColumn(name = "fk_id",referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "fk_id",referencedColumnName = "id")
     private Person owner;
     @Column(name = "date_of_take_book")
     @Temporal(TemporalType.TIMESTAMP)
@@ -51,15 +49,6 @@ public class Book {
     public void setDateOfTakeBook(Date dateOfTakeBook) {
         this.dateOfTakeBook = dateOfTakeBook;
     }
-
-    public Integer getFkId() {
-        return fkId;
-    }
-
-    public void setFkId(Integer fkId) {
-        this.fkId = fkId;
-    }
-
     public int getId() {
         return id;
     }

@@ -53,8 +53,10 @@ public class PersonService {
         return personRepository.findByFullName(name);
     }
 
-    public List<Book> personHaveBooks(int fkId){
-        List<Book> books = bookRepository.findByFkId(fkId);
+    public List<Book> personHaveBooks(int id){
+        Person person = personRepository.findById(id).orElse(null);
+
+        List<Book> books = person.getBooks();
         for (Book book:books) {
             Date dateOfTakeBook = book.getDateOfTakeBook();
             if (dateOfTakeBook != null){

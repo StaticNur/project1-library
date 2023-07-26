@@ -22,8 +22,8 @@
       <b th:text="${b.getName()+', '+ b.getAuthor()+', '+ b.getYearOfPublishing()}">Название, Автор, Год публикации</b>
       <br>
       <br>
-      <span th:if="${b.getFkId()==null}">Книга свободна</span>
-      <div th:if="${b.getFkId()!=null}">
+      <span th:if="${b.getOwner()==null}">Книга свободна</span>
+      <div th:if="${b.getOwner()!=null}">
         <span>Книга сейчас у:</span>
         <b th:text="${b.getOwner().getFullName}">Читатель</b>
       </div>

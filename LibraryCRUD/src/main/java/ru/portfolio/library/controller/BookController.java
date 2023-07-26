@@ -17,23 +17,23 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/books")
 public class BookController {
-    private final BookDAO bookDAO;
-    private final PersonDAO personDAO;
     private final BookService bookService;
     private final PersonService personService;
     @Autowired
-    public BookController(BookDAO bookDAO, PersonDAO personDAO, BookService bookService, PersonService personService) {
-        this.bookDAO = bookDAO;
-        this.personDAO = personDAO;
+    public BookController(BookService bookService, PersonService personService) {
         this.bookService = bookService;
         this.personService = personService;
     }
     @GetMapping
-    public String showAll(@RequestParam(value = "page",defaultValue = "0") int page,
-                          @RequestParam(value = "books_per_page", defaultValue = "0") int booksPerPage,
+    public String showAll(@RequestParam(value = "page", required = false) Integer page,
+                          @RequestParam(value = "books_per_page", required = false ) Integer booksPerPage,
                           @RequestParam(value = "sort_by_year", defaultValue = "false") boolean sortByYear,
                           Model model){
-        model.addAttribute("books",bookService.findAll(page,booksPerPage,sortByYear));
+        if (page == null || booksPerPage ==null){
+            model.addAttribute("books",bookService.findAll(sortByYear));
+        }else{
+            model.addAttribute("books",bookService.findAll(page,booksPerPage,sortByYear));
+        }
         return "books/showAll";
     }
     @GetMapping("/new")
@@ -49,7 +49,7 @@ public class BookController {
     }
     @GetMapping("{id}")
     public String showBook(@PathVariable("id") int id, Model model,
-                           @ModelAttribute("book") Book book){
+                           @ModelAttribute("person") Person person){
         model.addAttribute("book",bookService.findById(id));
         Person bookOwner = bookService.getBookOwner(id);
         if(bookOwner != null)
@@ -66,7 +66,7 @@ public class BookController {
     @PatchMapping("{id}/assign")
     public String assignBook(@PathVariable("id") int id,
                              @RequestParam("selectedPersonId") int selectedPersonId){
-        bookService.assignBook(id, selectedPersonId);
+        bookService.assignBook(id, personService.findById(selectedPersonId));
         return "redirect: /books/"+id;
     }
     @GetMapping("edit/{id}")

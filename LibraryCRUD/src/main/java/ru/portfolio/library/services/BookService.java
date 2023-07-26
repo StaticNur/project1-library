@@ -21,25 +21,21 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class BookService {
     private final BookRepository bookRepository;
-    private final PersonRepository personRepository;
-
     @Autowired
-    public BookService(BookRepository bookRepository, PersonRepository personRepository) {
+    public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.personRepository = personRepository;
     }
-
+    public List<Book> findAll(boolean sortByYear) {
+        //http://localhost:8080/books?sort_by_year=true
+        if (sortByYear)//только сортировка
+            return bookRepository.findAll(Sort.by("yearOfPublishing"));
+        else return bookRepository.findAll();
+    }
     public List<Book> findAll(int page, int booksPerPage, boolean sortByYear) {
         //http://localhost:8080/books?page=1&books_per_page=3
-        //http://localhost:8080/books?sort_by_year=true
-        if ((page >= 0) && (booksPerPage > 0) && (sortByYear))//все есть (параметры в поисковой строке)
-            return bookRepository.
-                    findAll(PageRequest.of(page, booksPerPage,Sort.by("yearOfPublishing"))).getContent();
-        else  if ((page == 0) && (booksPerPage >= 0) && (sortByYear)) {//только сортировка
-            return bookRepository.findAll(Sort.by("yearOfPublishing"));
-        }if ((page >= 0) && (booksPerPage > 0)) {//только страницы
-            return bookRepository.findAll(PageRequest.of(page,booksPerPage)).getContent();
-        }else return bookRepository.findAll(); //ничего нет
+        if (sortByYear)//все есть (параметры в поисковой строке)
+            return bookRepository.findAll(PageRequest.of(page, booksPerPage,Sort.by("yearOfPublishing"))).getContent();
+        else return bookRepository.findAll(PageRequest.of(page,booksPerPage)).getContent();//только страницы
     }
     public Book findById(int id) {
         Optional<Book> book = bookRepository.findById(id);
@@ -53,11 +49,10 @@ public class BookService {
 
     @Transactional
     public void update(int id, Book book) {
-        Book originBook = bookRepository.findById(id).orElse(null);
-        originBook.setName(book.getName());
-        originBook.setAuthor(book.getAuthor());
-        originBook.setYearOfPublishing(book.getYearOfPublishing());
-        bookRepository.save(originBook);
+        Book originBook = bookRepository.findById(id).get();
+        book.setOwner(originBook.getOwner());
+        book.setId(id);
+        bookRepository.save(book);
     }
 
     @Transactional
@@ -66,27 +61,24 @@ public class BookService {
     }
 
     public Person getBookOwner(int id) {
-        Book book = bookRepository.findById(id).orElse(null);
-        if (book.getFkId() == null)//проверка на существует ли владелец
-            return null;
-        return personRepository.findById(book.getFkId()).orElse(null);//извлекаем владельца
+        //save здесь не нужен т.к. объект загружается не лениво. Мы находимся на стороне One
+        return bookRepository.findById(id).map(Book::getOwner).orElse(null);
     }
 
     @Transactional
-    public void assignBook(int id, int selectedPersonId) {
-        Book book = bookRepository.findById(id).orElse(null);
-        book.setFkId(selectedPersonId);
-        LocalDateTime now = LocalDateTime.now();
-        book.setDateOfTakeBook(Date.from(now.atZone(ZoneId.systemDefault()).toInstant()));
-        bookRepository.save(book);
+    public void assignBook(int id, Person selectedPersonId) {
+        bookRepository.findById(id).ifPresent(book -> {
+            book.setOwner(selectedPersonId);
+            book.setDateOfTakeBook(new Date());
+        });
     }
 
     @Transactional
     public void releaseBook(int id) {
-        Book book = bookRepository.findById(id).orElse(null);
-        book.setFkId(null);
-        book.setDateOfTakeBook(null);
-        bookRepository.save(book);
+        bookRepository.findById(id).ifPresent(book -> {
+            book.setOwner(null);
+            book.setDateOfTakeBook(null);
+        });
     }
     public List<Book> findByNameStartingWith(String name){
         return bookRepository.findByNameStartingWith(name);
