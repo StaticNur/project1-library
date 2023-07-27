@@ -44,7 +44,7 @@ public class PeopleController {
         if(bindingResult.hasErrors())
             return "people/new";
         personService.savePerson(person);
-        return "redirect: /people";
+        return "redirect:/people";
     }
     @GetMapping("{id}/edit")
     public String update(@PathVariable("id") int id, Model model){
@@ -57,12 +57,11 @@ public class PeopleController {
         if(bindingResult.hasErrors())
             return "people/editPerson";
         personService.update(id,person);
-        return "redirect: /people";
+        return "redirect:/people";
     }
     @DeleteMapping("{id}")
     public String delete(@PathVariable("id") int id){
         personService.delete(id);
-        return "redirect: /people";
+        return "redirect:/people";
     }
-
 }

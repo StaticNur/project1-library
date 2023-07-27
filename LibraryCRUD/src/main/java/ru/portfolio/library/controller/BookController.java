@@ -45,7 +45,7 @@ public class BookController {
         if(bindingResult.hasErrors())
             return "books/new";
         bookService.saveBook(book);
-        return "redirect: /books";
+        return "redirect:/books";
     }
     @GetMapping("{id}")
     public String showBook(@PathVariable("id") int id, Model model,
@@ -61,13 +61,13 @@ public class BookController {
     @PatchMapping("{id}/release")
     public String releaseBook(@PathVariable("id") int id){
         bookService.releaseBook(id);
-        return "redirect: /books/"+id;
+        return "redirect:/books/"+id;
     }
     @PatchMapping("{id}/assign")
     public String assignBook(@PathVariable("id") int id,
                              @RequestParam("selectedPersonId") int selectedPersonId){
         bookService.assignBook(id, personService.findById(selectedPersonId));
-        return "redirect: /books/"+id;
+        return "redirect:/books/"+id;
     }
     @GetMapping("edit/{id}")
     public String editBook(@PathVariable("id") int id, Model model){
@@ -80,12 +80,12 @@ public class BookController {
         if(bindingResult.hasErrors())
             return "books/editBook";
         bookService.update(id,book);
-        return "redirect: /books";
+        return "redirect:/books";
     }
     @DeleteMapping("{id}")
     public String delete(@PathVariable("id") int id){
         bookService.delete(id);
-        return "redirect: /books";
+        return "redirect:/books";
     }
     @GetMapping("/search")
     public String searchBook(@RequestParam(value = "name", defaultValue = "") String name, Model model){
